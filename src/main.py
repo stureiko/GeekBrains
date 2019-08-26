@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
-
 print('Hello World!')
 
 ale = 71
-#age = int(input('How old are you: '))
+#age = int(input('Сколько вам лет: '))
 age = 35
 
 after20 = age + 20
-print "After 20 years you will be:", after20
+print('Через 20 лет вам будет:', after20)
 
 alive = ale - age
-print 'You have to live:', alive
+print('Вам осталось жить:', alive)
 
 count = age*365*24*60
-print 'You lived', count, 'seconds.'
+print('Вы прожили', count, 'секунд.')
