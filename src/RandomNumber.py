@@ -7,11 +7,14 @@ count = 0
 # Выбераем уровень сложности
 # делаем проверку на валидность ввода
 levels = {1: 10, 2: 5, 3: 3}
+
+
 while True:
     level = input('Введите уровень сложности от 1 до 3: ')
     if level.isdigit():
         if int(level) in levels.keys():
-            print(f'Вы выбрали {int(level)} уровень')
+            level = int(level)
+            print(f'Вы выбрали {level} уровень')
             break
         else:
             print(f'Такого уровня не предусмотрено.')
@@ -20,7 +23,28 @@ while True:
         print('Вы ввели не число')
         continue
 
-max_count = levels[3]
+max_count = levels[level]
+user_count = None
+
+while True:
+    user_count = input('Введите количество пользователей: ')
+    if user_count.isdigit():
+        user_count = int(user_count)
+        print(f'Вы ввели {user_count} пользователей.')
+        break
+    else:
+        print('Вы ввели не число')
+        continue
+
+users = {}
+for i in range(1, user_count+1):
+    users[i] = input(f'Введите имя пользователя № {i}: ')
+
+print('\nПользователи:')
+for key, val in users.items():
+    print(f'{key}: {val}')
+
+print('\n')
 
 while number != user_number:
     count += 1
