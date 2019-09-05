@@ -14,7 +14,7 @@ while True:
     if level.isdigit():
         if int(level) in levels.keys():
             level = int(level)
-            print(f'Вы выбрали {level} уровень')
+            print(f'Вы выбрали {level} уровень, у вас {levels[level]} попыток.')
             break
         else:
             print(f'Такого уровня не предусмотрено.')
@@ -46,21 +46,33 @@ for key, val in users.items():
 
 print('\n')
 
-while number != user_number:
+is_winner = False
+winner_name = ''
+
+while not is_winner:
     count += 1
     if count > max_count:
         print('Просрали !!!')
         break
     print(f'Попытка № {count}')
-    user_number = input('Введите число от 1 до 100: ')
-    if user_number.isdigit():
-        user_number = int(user_number)
-    else:
-        print('Вы ввели не число. Попробуйте еще раз.')
-        continue
-    if number > user_number:
-        print('Ваше число меньше загаданного.')
-    elif number < user_number:
-        print('Ваше число больше загаданного')
+
+    for key in users.keys():
+        print(f'Ход пользователя {users[key]}')
+
+        user_number = input('Введите число от 1 до 100: ')
+
+        if user_number.isdigit():
+            user_number = int(user_number)
+        else:
+            print('Вы ввели не число. Попробуйте еще раз.')
+
+        if number == user_number:
+            is_winner = True
+            winner_name = users[key]
+            break
+        elif number > user_number:
+            print('Ваше число меньше загаданного.')
+        else:
+            print('Ваше число больше загаданного')
 else:
-    print('Победа!')
+    print(f'Победитель {winner_name}!')
