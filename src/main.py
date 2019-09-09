@@ -83,6 +83,7 @@ for i in range(1, 20, 2):
 print('\n\n**************** РАБОТА СО СЛОВАРЕМ *******************\n')
 friend = {'name': 'Max', 'age': 23}
 print('Создание словаря: {}'.format(friend))
+print(type(friend))
 
 print('\nДоступ по ключу')
 print('Сколько лет: {}'.format(friend['age']))
