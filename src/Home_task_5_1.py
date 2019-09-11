@@ -26,9 +26,10 @@ def del_dir():
             print(f'Deleted: {del_path}')
 
 
-print('\nСоздаем')
-create_dir()
+if (__name__) == '__main__':
+    print('\nСоздаем')
+    create_dir()
 
-print('\nУдаляем')
-del_dir()
+    print('\nУдаляем')
+    del_dir()
 

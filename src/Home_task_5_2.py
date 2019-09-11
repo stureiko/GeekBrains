@@ -17,39 +17,39 @@ def random_arg(original_list: list):
         return random.choice(original_list)
 
 
-# генерируем списки для работы
-numbers = []
-for i in range(20):
-    numbers.append(random.randint(-100, 100))
-num_non = []
+if (__name__) == '__main__':
+    # генерируем списки для работы
+    numbers = []
+    for i in range(20):
+        numbers.append(random.randint(-100, 100))
+    num_non = []
 
-# проверяем работу
-print(random_arg(numbers))
-print(random_arg(num_non))
+    # проверяем работу
+    print(random_arg(numbers))
+    print(random_arg(num_non))
 
-
-#     Примечание: Список для проверки введите вручную.
-print('\n\nВвод тестового списка')
-numbers.clear()
-while True:
-    num_items = input('Введите количество элементов тестового списка: ')
-    try:
-        num_items = int(num_items)
-        if num_items > 0:
-            break
-        else:
-            print('Необходимо ввести целое положительное число')
-    except ValueError:
-        print('Необходимо ввести целое положительное число')
-
-for i in range(1, num_items+1):
+    #     Примечание: Список для проверки введите вручную.
+    print('\n\nВвод тестового списка')
+    numbers.clear()
     while True:
-        number = input(f'Введите {i}-й элемент списка: ')
+        num_items = input('Введите количество элементов тестового списка: ')
         try:
-            number = int(number)
-            numbers.append(number)
-            break
+            num_items = int(num_items)
+            if num_items > 0:
+                break
+            else:
+                print('Необходимо ввести целое положительное число')
         except ValueError:
-            print('Необходимо ввести целое число')
+            print('Необходимо ввести целое положительное число')
 
-print(random_arg(numbers))
+    for i in range(1, num_items+1):
+        while True:
+            number = input(f'Введите {i}-й элемент списка: ')
+            try:
+                number = int(number)
+                numbers.append(number)
+                break
+            except ValueError:
+                print('Необходимо ввести целое число')
+
+    print(random_arg(numbers))
