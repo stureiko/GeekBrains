@@ -1,6 +1,6 @@
 import pickle
 
-person = {'Name': 'Max', 'phones': [123, 456]}
+person = {'Name': 'Опа', 'phones': [123, 456]}
 
 with open('person.dat', 'wb') as f:
     pickle.dump(person, f)
