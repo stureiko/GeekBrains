@@ -30,8 +30,15 @@ print(byte_my_favorite_group)
 print(type(byte_my_favorite_group))
 
 # Записать в файл picle
-with open('group.picle', 'wb') as f:
+with open('groups_byte.picle', 'wb') as f:
     pickle.dump(byte_my_favorite_group, f)
+
+# ************ Логичнее сразу записать в файл без промежуточного преобразования в байты *********
+# но задание требует сначала преобразовать в байты
+
+with open('groups.picle', 'wb') as f:
+    pickle.dump(my_favorite_group, f)
+
 
 # Сериализация в json
 json_my_favorite_group = json.dumps(my_favorite_group)
@@ -39,5 +46,10 @@ print(json_my_favorite_group)
 print(type(json_my_favorite_group))
 
 # Запись в файл json
-with open('groups.json', 'w', encoding='utf-8') as f:
+with open('groups_byte.json', 'w', encoding='utf-8') as f:
     json.dump(json_my_favorite_group, f)
+
+# ************ Логичнее сразу записать в файл без промежуточного преобразования *********
+
+with open('groups.json', 'w') as f:
+    json.dump(my_favorite_group, f)
