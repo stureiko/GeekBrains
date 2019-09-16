@@ -42,3 +42,66 @@ print(squares)
 names = ['Андрей', 'Борис', 'Алексей', 'Денис']
 a_names = [name for name in names if name.startswith('А')]
 print(a_names)
+
+# Приведение к логическому условию
+print('\n*************** Приведение к логическому типу ****************')
+str = 'test string'
+print(str)
+print('Строка не пустая' if str else 'Строка пустая')
+
+str = ''
+print(str)
+print('Строка не пустая' if str else 'Строка пустая')
+
+print('\n*************** and возвращает последнюю истину ****************')
+print([1] and 1 and 20 and 1.2)
+
+print('\n*************** or возвращает последнюю ложь или первую истину ****************')
+print([1] or [])
+print([] or '' or {})
+
+print('\n*************** Применение логики **************')
+print('Выввести из  списка числа, корень из которых больше 2')
+
+import math
+numbers = [1, 2, 3, 4, 6, 8, -8, -4, -9]
+numbers = [number for number in numbers if number > 0 and math.sqrt(number) > 2]
+print(numbers)
+
+print('\nДобавление в список элемента, если список передан на вход')
+
+
+def add_to_list(input_list=None):
+    input_list = input_list or []
+    input_list.append(2)
+    return input_list
+
+
+print('Пустой список')
+print(add_to_list())
+
+print('Не пустой список')
+print(add_to_list([0, 1]))
+
+print('\nКопирование списков')
+# для одноуровневых списков можно использоват срез или copy
+a = [1, 2, 3]
+b = a[:]
+b[1] = 100
+print(a)  # а не поменялся
+
+b = a.copy()
+b[1] = 200
+print(a)  # а не поменялся
+
+a = [1, 2, [3, 4]]
+b = a.copy()
+b[2][1] = 200
+print(a)  # a поменялся !!!
+
+import copy
+print('Используем deepcopy()')
+a = [1, 2, [3, 4]]
+b = copy.deepcopy(a)
+b[2][1] = 200
+print(a)  # а не поменялся !!!
