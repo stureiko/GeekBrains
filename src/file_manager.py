@@ -50,6 +50,7 @@ def save_info(message):
 
 
 if __name__ == '__main__':
+    current_path = os.getcwd()
     get_list(True)
     delete_f('test')
     save_info('Test message')
