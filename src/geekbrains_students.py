@@ -18,9 +18,13 @@ s = ''
 
 print('=========== через библиотеку BeautifulSoup ===========\n')
 sp = BS(text, 'html.parser')
-li2 = sp.span.text  # а если будет другой span?!
-s = [s for s in li2.split() if s.isdigit()]
-s = ' '.join(s)
+li2 = sp.find_all('span')
+s = [s.get_text() for s in li2 if s.get('class', '') == ['total-users']]
 
 # print(li2)
+print(s)
+s = ' '.join(s)
+s = [a for a in s.split() if a.isdigit()]
+s = ' '.join(s)
+
 print(s)
