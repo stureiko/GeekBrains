@@ -24,6 +24,7 @@ s = [s.get_text() for s in li2 if s.get('class', '') == ['total-users']]
 # print(li2)
 print(s)
 s = ' '.join(s)
+# print(s)
 s = [a for a in s.split() if a.isdigit()]
 s = ' '.join(s)
 
