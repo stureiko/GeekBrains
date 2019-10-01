@@ -33,11 +33,22 @@ def get_common_words(topic):
     return rate
 
 
-def get_page_lincs(topic):
+def get_page_links(topic):
     html_content = get_topic_page(topic)
     soup = BS(html_content, 'html.parser')
     li = soup.find_all('a')
     li2 = []
     for n in li:
-        li2.append(n.get('href', ''))
+        link = re.findall('https://[a-z]+.wikipedia.org/wiki/.+',n.get('href', ''))
+        if len(link) > 0:
+            li2.append(link[0])
     return li2
+
+
+def get_page_subtopics(topic):
+    links = get_page_links(topic)
+    sub_topics = []
+    for n in links:
+        sub_topic = re.sub('https://[a-z]+.wikipedia.org/wiki/', '', n)
+        sub_topics.append(sub_topic)
+    return sub_topics
