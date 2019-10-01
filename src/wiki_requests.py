@@ -10,9 +10,9 @@ def get_link(topic: str):
 def get_topic_page(topic: str):
     link = get_link(topic)
     html_content = get(link).text
-    with open(topic+".html", "w", encoding="utf-8") as f:
-        f.write(html_content)
-    return True
+    # with open(topic+".html", "w", encoding="utf-8") as f:
+    #     f.write(html_content)
+    return html_content
 
 
 if __name__ == '__main__':
