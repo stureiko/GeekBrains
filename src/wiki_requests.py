@@ -2,6 +2,7 @@
 import collections
 import re
 from requests import get
+from bs4 import BeautifulSoup as BS
 
 
 def get_link(topic: str):
@@ -30,3 +31,13 @@ def get_common_words(topic):
     words = get_topic_words(topic)
     rate = collections.Counter(words).most_common()
     return rate
+
+
+def get_page_lincs(topic):
+    html_content = get_topic_page(topic)
+    soup = BS(html_content, 'html.parser')
+    li = soup.find_all('a')
+    li2 = []
+    for n in li:
+        li2.append(n.get('href', ''))
+    return li2
