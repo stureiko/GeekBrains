@@ -19,19 +19,19 @@ from wiki_requests import get_common_words, get_page_subtopics, get_page_links
 
 if __name__ == '__main__':
     topic = input('Введите тему запроса: ')
-    rate = get_common_words(topic)
+    rate = get_common_words(topic)  # Получить список слов и частоту их упоминания
     for r in range(0, 9):
         print(rate[r][0] + ': ' + str(rate[r][1]))
-    li = get_page_links(topic)
+    li = get_page_links(topic)  # Получить ссылки на другие страницы wiki, их можеи быть много
     ans = input(f'Найдено {len(li)} ссылок. Обрабатываем дальше (y/n)?')
     while True:
         if ans == 'y':
             for i in li:
                 print(i)
-            li = get_page_subtopics(topic)
+            li = get_page_subtopics(topic)  # Получить из ссылок топики для формирования новых запросов
             for i in li:
                print('\n************' + i + '*****************')
-               print(get_common_words(i))
+               print(get_common_words(i))  # Получить список слов и частоту их упоминания
         elif ans == 'n':
             break
         else:
