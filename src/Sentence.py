@@ -2,16 +2,30 @@
 Класс слова, содержит слово и часть речи
 """
 class World:
-    text = ""
-    part = ""
 
     def __init__(self, text, part):
         self.text = text
         self.part = part
 
 
-# Создать слово
-wd = World('test', 'глагол')
+class Noun(World):
+    __grammar: str = 'сущ'
+
+    def __init__(self, text=''):
+        self.text = text
+
+    def part(self):
+        return 'существительное'
+
+
+class Verb(World):
+    __grammar: str = 'гл'
+
+    def __init__(self, text=''):
+        self.text = text
+
+    def part(self):
+        return 'глагол'
 
 
 """
@@ -35,17 +49,20 @@ class Sentence:
         part_set = set()  # Поскольку части речи должны упоминатося только один раз - то поместим их в множество
         for i in self.content:
             if i < len(words):
-                part_set.add(words[i].part)  # дубликаты не будут включены, т.к part_set - множество
+                part_set.add(words[i].part())  # дубликаты не будут включены, т.к part_set - множество
         for i in part_set:
             print(i, end=' ')
         print(end='\n')
 
 
 # Список слов
-words = [World('собака', 'сущ'),
-         World('ела', 'глагол'),
-         World('колбасу', 'сущ'),
-         World('вечером', 'наречие')]
+words = []
+words.append(Noun("собака"))
+words.append(Verb("ела"))
+words.append(Noun("колбасу"))
+words.append(Noun("кот"))
+words.append(Verb('пошел'))
+
 
 # список индексов для content
 li = [0, 1, 2, 3, 4]
@@ -53,3 +70,4 @@ li = [0, 1, 2, 3, 4]
 s = Sentence(li)
 s.show(words)
 s.show_parts(words)
+

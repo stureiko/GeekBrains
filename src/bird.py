@@ -2,29 +2,26 @@ class Bird:
     name = 'Unknown'
     distance = 0
     speed = 100
+    __step = 1
 
-    def __init__(self, name, distance, speed):
+    def __init__(self, name, speed, steps):
         self.name = name
-        self.distance = distance
         self.speed = speed
+        for n in range(steps):
+            self.run()
 
     def saw_name(self):
         print(self.name)
 
-    def run(self, distance=speed):
-        self.distance += distance
+    def run(self, distance=False):
+        if not distance:
+            distance = self.speed
+        self.distance += int(distance * (1 + self.__step / 10))
+        self.__step += 1
 
 
-owl = Bird('Owl', 200, 100)
+class Chicken(Bird):
+    type = 'Chicken'
 
-
-eagle = Bird('Eagle', 100, 300)
-
-owl.saw_name()
-eagle.saw_name()
-
-print(owl.distance)
-owl.run(200)
-print(owl.distance)
-owl.run()
-print(owl.distance)
+    def __init__(self, steps):
+        super(Chicken, self).__init__('Chicken', 50, steps)
