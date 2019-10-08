@@ -9,8 +9,8 @@ class Game:
 
     def __init__(self):
         self.player = Player()
-        self.hamsters = [Hamster(len(self.map.split('\n')[0]), len(self.map.split('\n')))
-                         for i in range(hamsters_count)]
+        self.hamsters = [Hamster(i + 1, len(self.map.split('\n')[0]), len(self.map.split('\n')))
+                          for i in range(hamsters_count)]
 
     @staticmethod
     def add_point(position, name, mp):
@@ -24,7 +24,7 @@ class Game:
         s = self.map
         s = self.add_point(self.player.position, 'x', s)
         for h in self.hamsters:
-            s = self.add_point(h.position, 'o', s)
+            s = self.add_point(h.position, str(h.id), s)
         print(s)
 
     def move_player(self, destination):
@@ -45,6 +45,18 @@ class Game:
             if self.player.position[1] == 0:
                 return False
             self.player.position[1] -= 1
+        self.on_move()
+
+    def get_hamster_on_position(self, coords):
+        s = self.map
+        for h in self.hamsters:
+            s = self.add_point(h.position, str(h.id), s)
+        return s.split('\n')[coords[1]][coords[0]]
+
+    def on_move(self):
+        hamster_on_field = self.get_hamster_on_position(self.player.position)
+        if not hamster_on_field == '*':
+            self.hamsters[int(hamster_on_field)-1].on_short()
 
     def start(self):
         self.render_map()
