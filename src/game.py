@@ -1,5 +1,7 @@
-import os
 from player import Player
+from hamster import Hamster
+
+hamsters_count = 4
 
 
 class Game:
@@ -7,6 +9,8 @@ class Game:
 
     def __init__(self):
         self.player = Player()
+        self.hamsters = [Hamster(len(self.map.split('\n')[0]), len(self.map.split('\n')))
+                         for i in range(hamsters_count)]
 
     @staticmethod
     def add_point(position, name, mp):
@@ -19,6 +23,8 @@ class Game:
     def render_map(self):
         s = self.map
         s = self.add_point(self.player.position, 'x', s)
+        for h in self.hamsters:
+            s = self.add_point(h.position, 'o', s)
         print(s)
 
     def move_player(self, destination):
@@ -41,6 +47,7 @@ class Game:
             self.player.position[1] -= 1
 
     def start(self):
+        self.render_map()
         while True:
             command = input("Insert command: ")
             if command in ['a', 's', 'd', 'w']:
