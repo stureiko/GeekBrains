@@ -9,8 +9,9 @@ class Game:
 
     def __init__(self):
         self.player = Player()
-        self.hamsters = [Hamster(i + 1, len(self.map.split('\n')[0]), len(self.map.split('\n')))
-                          for i in range(hamsters_count)]
+        self.hamsters = []
+        for i in range(hamsters_count):
+            self.hamsters.append(Hamster(i + 1, self.get_full_map()))
 
     @staticmethod
     def add_point(position, name, mp):
@@ -24,7 +25,8 @@ class Game:
         s = self.map
         s = self.add_point(self.player.position, 'x', s)
         for h in self.hamsters:
-            s = self.add_point(h.position, str(h.id), s)
+            if h.health > 0:
+                s = self.add_point(h.position, str(h.id), s)
         print(s)
 
     def move_player(self, destination):
@@ -45,18 +47,31 @@ class Game:
             if self.player.position[1] == 0:
                 return False
             self.player.position[1] -= 1
-        self.on_move()
+        self.on_move(destination)
 
-    def get_hamster_on_position(self, coords):
+    def get_full_map(self):
         s = self.map
         for h in self.hamsters:
             s = self.add_point(h.position, str(h.id), s)
+        return s
+
+    def get_hamster_on_position(self, coords):
+        s = self.get_full_map()
         return s.split('\n')[coords[1]][coords[0]]
 
-    def on_move(self):
+    directions = {'w': 's', 's': 'w', 'a': 'd', 'd': 'a'}
+
+    def on_move(self, direction):
         hamster_on_field = self.get_hamster_on_position(self.player.position)
         if not hamster_on_field == '*':
-            self.hamsters[int(hamster_on_field)-1].on_short()
+            killed = self.hamsters[int(hamster_on_field)-1].on_short()
+            if not killed:
+                print(f'I have been shorted! health = {self.hamsters[int(hamster_on_field)-1].health} '
+                      f'id = {self.hamsters[int(hamster_on_field)-1].id}')
+                print("was'n killed")
+                self.move_player(self.directions[direction])
+            else:
+                print(f'I have been killed, id = {self.hamsters[int(hamster_on_field)-1].id}')
 
     def start(self):
         self.render_map()
