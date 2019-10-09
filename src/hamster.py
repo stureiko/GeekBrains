@@ -7,7 +7,8 @@ class Hamster:
 
     def __init__(self, h_id, map: str):
         self.id = h_id
-        self.health = randint(1, 4)
+        self.health = 1
+        # randint(1, 4)
         self.position = self.get_clear_position(map)
 
     @staticmethod
