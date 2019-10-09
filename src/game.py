@@ -1,11 +1,18 @@
 from player import Player
 from hamster import Hamster
 
-hamsters_count = 4
 
+hamsters_count = 2
 
 class Game:
-    map = """********\n********\n********\n********"""
+    map_width = 6
+    map_height = map_width // 2
+    map = ''
+    for i in range(map_height):
+        for j in range(map_width):
+            map = map + '*'
+        map = map + '\n'
+    map = map[:-1]
     game_on = True
     directions = {'w': 's', 's': 'w', 'a': 'd', 'd': 'a'}
     happy_message = 'All Hamsters dead! U-a-o!'
@@ -43,7 +50,7 @@ class Game:
                 return False
             self.player.position[0] -= 1
         elif destination == 'd':
-            #  обрадотка бага № 1
+            #  обработка бага № 1
             if self.player.position[0] == len(self.map.split('\n')[0]) - 1:  # баг 1
                 return False
             self.player.position[0] += 1
@@ -59,15 +66,18 @@ class Game:
             s = self.add_point(h.position, str(h.id), s)
         return s
 
-    def get_hamster_on_position(self, coords):
+    def get_hamster_id_on_position(self, coords):
         s = self.get_full_map()
-        map = s.split('\n')
-        print(f'map x: {len(map[0])}, y: {len(map[1])}')
         return s.split('\n')[coords[1]][coords[0]]
+
+    def get_hamster(self, id):
+        for h in self.hamsters:
+            if h.id == id:
+                return h
 
     def on_move(self, direction):
         # получить позицию хомяка
-        hamster_on_field = self.get_hamster_on_position(self.player.position)
+        hamster_on_field = self.get_hamster_id_on_position(self.player.position)
         if not hamster_on_field == '*':
             self.player.was_hit(int(hamster_on_field))
             if self.player.health <= 0:
@@ -75,21 +85,25 @@ class Game:
                 print('Game over, you dead!')
                 return False
             print(f'Player: My health: {self.player.health}')
-            killed = self.hamsters[int(hamster_on_field)-1].on_short()
+            killed = self.get_hamster(int(hamster_on_field)).on_short()
             if not killed:
-                print(f'Hamster:I have been shorted! health = {self.hamsters[int(hamster_on_field)-1].health} '
-                      f'id = {self.hamsters[int(hamster_on_field)-1].id}')
-                print("was'n killed")
+                print(f'Hamster: I\'ve been hit! health = {self.get_hamster(int(hamster_on_field)).health} '
+                      f'id = {self.get_hamster(int(hamster_on_field)).id}')
+                print("Hamster was'n killed")
                 self.move_player(self.directions[direction])
-            else:
-                print(f'Hamster: I have been killed, id = {self.hamsters[int(hamster_on_field)-1].id}')
+            else:  # обработка бага 3
+                print(f'Hamster: I\'v been killed, id = {self.get_hamster(int(hamster_on_field)).id}')
+                self.hamsters.remove(self.get_hamster(int(hamster_on_field)))
+                print(f'Num of Hamsters: {len(self.hamsters)}')
+                for h in self.hamsters:
+                    print(f'Hamster id = {h.id}')
 
     def start(self):
         self.render_map()
         while self.game_on:
             if len(self.hamsters) == 0:
                 print(self.happy_message)
-                return True
+                break
             command = input("Insert command: ")
             if command in ['a', 's', 'd', 'w']:
                 self.move_player(command)

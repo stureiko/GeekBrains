@@ -7,8 +7,7 @@ class Hamster:
 
     def __init__(self, h_id, map: str):
         self.id = h_id
-        self.health = 1
-        # randint(1, 4)
+        self.health = randint(1, 4)
         self.position = self.get_clear_position(map)
 
     @staticmethod
@@ -17,6 +16,9 @@ class Hamster:
         map_width = len(map.split('\n')[0])
         while True:
             coords = [randint(0, map_width - 1), randint(0, map_height - 1)]
+            if coords[1] == 0 and coords[0] == 0:
+                print('Хомяк в точке возрождения игрока')  # баг 2
+                continue
             if map.split('\n')[coords[1]][coords[0]] == '*':
                 return coords
 
