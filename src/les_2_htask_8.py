@@ -7,7 +7,13 @@ s = input('Введите строку символов: ')
 target = input('Введите искомый символ: ')
 res = 0
 
+# ***** реализация через for
 for i in s:
     if i == target:
         res += 1
+print(res)
+
+# ***** реализация через метод строки
+res = 0
+res = s.count(target)
 print(res)
