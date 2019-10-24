@@ -10,9 +10,7 @@ n = int(input('Введите колчество элементов ряда: ')
 res = 0
 for i in range(0, n):
     if i % 2 == 0:
-        print(f'{i}, {1/(2**i)}')
         res += 1/(2**i)
     else:
-        print(f'{i}, {-1/(2**i)}')
         res -= 1/(2**i)
 print(res)
