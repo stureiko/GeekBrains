@@ -9,3 +9,9 @@ while num > 0:
     res += str(num % 10)
     num //= 10
 print(res)
+
+#  ***** Второе решение *********
+
+num = input('ВВедите число: ')
+res = ''.join(reversed(num))
+print(res)
