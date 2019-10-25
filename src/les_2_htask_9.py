@@ -12,11 +12,11 @@ def sum_num(n: int) -> int:
     return res
 
 
-res = 0
-res_num = 0
+res: int = 0
+res_num: int = 0
 
 while True:
-    num = input('Введите число, для выхода введите любой символ кроме числа: ')
+    num = input('Введите число, для завершения введите любой символ кроме числа: ')
     if num.isdigit():
         num = int(num)
         if res < sum_num(num):
