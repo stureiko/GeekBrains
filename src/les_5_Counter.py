@@ -8,7 +8,7 @@ b = Counter('abracadabrab')
 c = Counter({'red': 2, 'blue': 4})
 d = Counter(cats=4, dogs=5)
 
-print(a, b,c, d, sep='\n')
+print(a, b, c, d, sep='\n')
 print('*'*50+'\n')
 print(list(b.elements()))  # Выведет элементы
 
