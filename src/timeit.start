@@ -1,1 +1,0 @@
-python -m timeit -n 1000 -s "import file.name" "function.name"
