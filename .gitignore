@@ -106,3 +106,9 @@ venv.bak/
 # PyCharm
 .idea
 .DS_Store
+
+# Templates
+/src/.*
+
+# .gitignore
+.gitignore
