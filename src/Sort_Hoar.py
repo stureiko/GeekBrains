@@ -1,6 +1,6 @@
 import random
 
-size = 10
+size = 100
 array = [i for i in range(size)]
 random.shuffle(array)
 print(array)
@@ -35,7 +35,7 @@ def quick_sort_no_memory(array: list, fst: int, lst: int):
     if fst >= lst:
         return
 
-    print(array)
+    # print(array)
     pivot = array[random.randint(fst, lst)]
     i, j = fst, lst
 
