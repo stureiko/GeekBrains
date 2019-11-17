@@ -1,5 +1,4 @@
 import unittest
-from src.les_5_htask_2 import plus
 
 class PlusTest(unittest.TestCase):
     def test_0(self):
