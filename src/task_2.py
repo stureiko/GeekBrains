@@ -48,3 +48,5 @@ def deijkstra(graph,start):
     return routes
 
 print(*deijkstra(g,0),sep='\n')
+
+

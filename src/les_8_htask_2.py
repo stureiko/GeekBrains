@@ -10,6 +10,7 @@
 #
 # ************************************************
 
+from collections import deque
 
 def dijkstra(graph, start):
     """
@@ -22,14 +23,13 @@ def dijkstra(graph, start):
     is_visited = [False] * length
     cost = [float('inf')] * length
     parent = [-1] * length
-
+    st = start
     cost[start] = 0
     min_cost = 0
     way = {}
 
     while min_cost < float('inf'):
         is_visited[start] = True
-        way[start] = []
 
         for i, vertex in enumerate(graph[start]):
             if vertex != 0 and not is_visited[i]:
@@ -37,7 +37,6 @@ def dijkstra(graph, start):
                 if cost[i] > vertex + cost[start]:
                     cost[i] = vertex + cost[start]
                     parent[i] = start
-                    way[start].append(i)
 
         min_cost = float('inf')
         for i in range(length):
@@ -45,12 +44,20 @@ def dijkstra(graph, start):
                 min_cost = cost[i]
                 start = i
 
-    list_keys = list(way.keys())
-    list_keys.sort()
-    for k in list_keys:
-        print(f'{k}: {way[k]}')
+    routes = [[] for _ in range(length)]
 
-    return cost
+    for i, stop in enumerate(parent):
+        routes[i] = deque([i])
+        if stop == -1:
+            continue
+        while stop != st:
+            routes[i].appendleft(stop)
+            j = stop
+            stop = parent[j]
+        else:
+            routes[i].appendleft(st)
+
+    return routes
 
 
 if __name__ == '__main__':
@@ -66,4 +73,8 @@ if __name__ == '__main__':
         [0, 0, 7, 0, 8, 1, 0, 0],
         [0, 0, 0, 0, 0, 1, 2, 0],
     ]
-    print(dijkstra(g, s))
+    # print(dijkstra(g, s))
+    node = 0
+    for i in dijkstra(g, s):
+        print(f'Node {node} routies: {i}')
+        node += 1
