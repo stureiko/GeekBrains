@@ -1,4 +1,4 @@
-input_str = 'sdhavhcblkB; ank nasdn ;l'
+input_str = 'hello'
 
 symbols = {}
 # посчитат количество входжений символа в строку

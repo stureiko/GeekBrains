@@ -24,8 +24,11 @@ if __name__ == '__main__':
 # Реализация через массив
     pods = []
     for i in range(1, len(s_1)):    # выделяем размер подстроки
+
         for j in range(len(s_1)):   # проходим по строке
+
             sub = s_1[j:j+i]        # и берем из нее подстроки
+
             if sub not in pods:     # проверяем, может такая уже есть
                 pods.append(sub)    # если нет - добавляем в массив подстрок
 
@@ -33,14 +36,20 @@ if __name__ == '__main__':
 # то же самое, только в массиве храним не сами подстроки, а их хеши
     pod2 = []
     for i in range(1, len(s_1)):
+
         for j in range(len(s_1)):
+
             sub = hashlib.sha1(s_1[j:j+i].encode('utf-8')).hexdigest()
+
             if sub not in pod2:
                 pod2.append(sub)
 
 # вывести результаты
-    print(len(pods))
-    print('*' * 50)
-    # print(*pods, sep='\n')
+    print('Реализация через массив подстрок')
+    print(f'В строке {s_1} содержится {len(pods)} уникальных подстрок')
 
-    print(len(pod2))
+    print('*' * 50)
+
+    print('\nРеализация через массив хешей')
+    print(f'В строке {s_1} содержится {len(pod2)} уникальных подстрок')
+

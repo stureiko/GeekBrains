@@ -24,5 +24,8 @@ c.right.right = Node(13)
 c.right.left = Node(9)
 print(c)
 
-d = build([7, 3, 11, 1, 5, 13, 9, 6, None, 4, None])
+d = build([7, 3, 11, 1, 5, 13, 9])
 print(d)
+
+e = Node(5)
+
