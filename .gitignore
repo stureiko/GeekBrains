@@ -115,3 +115,8 @@ venv.bak/
 
 # data .csv
 *.csv
+
+# data and webinar materials
+/data/*
+/Webinar/*
+*.png
