@@ -1,15 +1,29 @@
 import requests
 import json
-
-
-def url_req(url: str):
-    req = requests.get(url)
-    return req
+from pprint import pprint
 
 
 if __name__ == '__main__':
-    appid = 'b6907d289e10d714a6e88b30761fae22'
-    service = 'https://samples.openweathermap.org/data/2.5/weather'
-    req = url_req(f'{service}?q=London,uk&appid={appid}')
-    data = json.loads(req.text)
-    print(f"В городе {data[ 'name' ]} {data[ 'main' ][ 'temp' ]} градусов по Кельвину")
+
+    service = 'https://api.openweathermap.org/data/2.5/weather'
+    appid = '5b7949310b4e93947bded77662051058'
+
+    city = 'Moscow,ru'
+
+    headers = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'}
+
+    params = {'appid': appid,
+              'q': city
+              }
+
+    res = requests.get(service, headers=headers, params=params)
+
+    if res.ok:
+        data = json.loads(res.text)
+
+    print(f"\nВ городе {data[ 'name' ]} сейчас {int(data[ 'main' ][ 'temp' ]) - 273} градусов по Цельсию.")
+
+    print('\n')
+    print('*'*30)
+
+    pprint(data)
