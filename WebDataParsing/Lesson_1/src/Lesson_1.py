@@ -21,7 +21,7 @@ if __name__ == '__main__':
     if res.ok:
         data = json.loads(res.text)
 
-    print(f"\nВ городе {data[ 'name' ]} сейчас {int(data[ 'main' ][ 'temp' ]) - 273} градусов по Цельсию.")
+    print(f"\nВ городе {data[ 'name' ]} сейчас {round(data[ 'main' ][ 'temp' ] - 273.15, 2)} градусов по Цельсию.")
 
     print('\n')
     print('*'*30)
