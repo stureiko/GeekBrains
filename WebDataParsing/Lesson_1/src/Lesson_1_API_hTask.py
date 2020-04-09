@@ -39,37 +39,65 @@ def Task_1():
     print('*'*30)
     print(' '* 5 + 'Task 1')
     user = input_user_name()
+    # user = 'stureiko'
     url = 'https://api.github.com/users/' + user + '/repos'
-    response = requests.get(url)
+    params = {'per_page': '20',
+              'page': '1'
+              }
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'}
+
+    response = requests.get(url, params=params, headers=headers)
 
     if response.ok:
         data = json.loads(response.text)
         print(f'Для ползователя {user} найдены следующие репозитории:')
-        for num in range(len(data)):
-            print(f'\"{data[num]["name"]}\", language: {data[num]["language"]}')
 
+        while len(data) > 0:
+            pprint(len(data))
+            for num in range(len(data)):
+                print(f'\"{data[num]["name"]}\", language: {data[num]["language"]}')
+            i = int(params['page'])
+            params['page'] = str(i+1)
+            response = requests.get(url, params=params, headers=headers)
+            data = json.loads(response.text)
+    else:
+        print(response)
+        print(response.text)
 
 # ************************************************
 # Task 2
 # ************************************************
 
-
-
 def Task_2():
-    site = 'https://api.vk.com/method/users.get'
-    params = {'user_ids': '144051544',
-              'fields': 'bdate',
-              'access_token':'6a9c264b6e037ea6c66cc141b40ca13c87bf52cf2f7d9496d89a2b83b03f6687f73f672774572379a6522',
-              'v': '5.103'
+# Получение стоимости авиабилетов с aviasales
+    site = 'http://api.travelpayouts.com/v2/prices/latest'
+    params = {'currency': 'rub',
+              'period_type': 'month',
+              'origin': 'DME',
+              'destination': 'BER',
+              'beginning_of_period': '2020-08-01',
+              'page': '1',
+              'limit': '30',
+              'show_to_affiliates': 'true',
+              'sorting': 'price',
+              'token': '2307a34ffd39b622193e2cdadc5e99d1'
               }
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'}
     response = requests.get(site, headers=headers, params=params)
-    print(response)
-    data = json.loads(response.text)
-    pprint(data)
+
+    if response.ok:
+        data = json.loads(response.text)
+
+        with open('Task_2_aviasales_answer.json', 'w') as f:
+            f.write(json.dumps(data))
+
+        with open('Task_2_full_answer.txt', 'w') as f:
+            f.write(str(response.headers))
+            f.write(str(response.text))
 
 
 if __name__ == '__main__':
-    # Task_1()
-    Task_2()
+    Task_1()
+    # Task_2()
