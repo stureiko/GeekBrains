@@ -41,7 +41,7 @@ def Task_1():
     user = input_user_name()
     # user = 'stureiko'
     url = 'https://api.github.com/users/' + user + '/repos'
-    params = {'per_page': '20',
+    params = {'per_page': '4',
               'page': '1'
               }
     headers = {
@@ -54,7 +54,6 @@ def Task_1():
         print(f'Для ползователя {user} найдены следующие репозитории:')
 
         while len(data) > 0:
-            pprint(len(data))
             for num in range(len(data)):
                 print(f'\"{data[num]["name"]}\", language: {data[num]["language"]}')
             i = int(params['page'])
@@ -92,12 +91,34 @@ def Task_2():
 
         with open('Task_2_aviasales_answer.json', 'w') as f:
             f.write(json.dumps(data))
+            print(f'json data successfully write in file "Task_2_aviasales_answer.json"')
 
         with open('Task_2_full_answer.txt', 'w') as f:
             f.write(str(response.headers))
             f.write(str(response.text))
+            print(f'all response successfully write in file "Task_2_full_answer.txt"')
 
 
 if __name__ == '__main__':
-    Task_1()
-    # Task_2()
+    print('Выполнение ДЗ к уроку 1.')
+    print('Задача 1 - вывод репозиториев GitHub для заданного пользователя')
+    print('Задача 2 - прогноз стоимости авиабилетов на aviasales')
+
+    welcome = 'Введите номер задачи: '
+    s = input(welcome)
+
+    while True:
+        if s.isdigit():
+            if int(s) == 1:
+                print('Task1')
+                Task_1()
+                break
+            elif int(s) == 2:
+                print('Task2')
+                Task_2()
+                break
+            else:
+                s = ''
+        else:
+            print('Вы ввели неверный номер задачи, попробуйте еще раз.')
+            s = input(welcome)
