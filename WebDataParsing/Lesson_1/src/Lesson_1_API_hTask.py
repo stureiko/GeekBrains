@@ -70,6 +70,10 @@ def Task_1():
 
 def Task_2():
 # Получение стоимости авиабилетов с aviasales
+
+    with open('token.key', 'r') as f:
+        key = f.read()
+
     site = 'http://api.travelpayouts.com/v2/prices/latest'
     params = {'currency': 'rub',
               'period_type': 'month',
@@ -80,7 +84,7 @@ def Task_2():
               'limit': '30',
               'show_to_affiliates': 'true',
               'sorting': 'price',
-              'token': '2307a34ffd39b622193e2cdadc5e99d1'
+              'token': key
               }
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36'}
