@@ -25,34 +25,23 @@ from pprint import pprint
 import json
 
 
-def page_count(url: str, headers: {str: str}, params: {str: str}) -> int:
-    res = requests.get(url, headers=headers, params=params)
+def page_count(soup: bs) -> int:
+    # разбираем - количество страниц в выдаче
+    pages_group = soup.find_all('div', {'data-qa': 'pager-block'})[0]
+    # получаем из словаря page_count
+    # если page_count < 4 - то у нас в выдаче именно столько страниц
+    # если 4 <= page_count < 6 - то разбираем span class='pager-item-not-in-short-range' и получаем 4 или 5 страниц
+    # если page_count > 6 - то разбираем span за разделителем - оттуда выдергиваем конечное число страниц
 
-    if res.ok:
-        soup = bs(res.text, 'lxml')
+    page_count = json.loads(pages_group.find_all('script')[0]['data-params'])['pagesCount']
 
-        # разбираем - количество страниц в выдаче
-        pages_group = soup.find_all('div', {'data-qa': 'pager-block'})[0]
-        # получаем из словаря page_count
-        # если page_count < 4 - то у нас в выдаче именно столько страниц
-        # если 4 <= page_count < 6 - то разбираем span class='pager-item-not-in-short-range' и получаем 4 или 5 страниц
-        # если page_count > 6 - то разбираем span за разделителем - оттуда выдергиваем конечное число страниц
-
-        page_count = json.loads(pages_group.find_all('script')[0]['data-params'])['pagesCount']
-
-        if page_count < 4:
-            pass
-        elif 4 <= page_count < 6:
-            page_count = int(pages_group.find_all('span', {'class': 'pager-item-not-in-short-range'})[-1].getText())
-        else:
-            page_count = int(pages_group.find_all('span', {'class': 'pager-item-not-in-short-range'})[-1].find_all('a',
-                                                                                                                   {
-                                                                                                                       'class': 'bloko-button HH-Pager-Control'})[
-                                 0].getText())
-
+    if page_count < 4:
         return page_count
+    elif 4 <= page_count < 6:
+        return int(pages_group.find_all('span', {'class': 'pager-item-not-in-short-range'})[-1].getText())
     else:
-        return 0
+        return int(pages_group.find_all('span', {'class': 'pager-item-not-in-short-range'})[-1].\
+                   find_all('a', {'class': 'bloko-button HH-Pager-Control'})[0].getText())
 
 
 if __name__ == '__main__':
@@ -88,11 +77,20 @@ if __name__ == '__main__':
                'page': '0'
                }
 
-    res = page_count(main_link, headers, params)
-    print(f'\nПекарь: pages - {res}')
+    res = requests.get(main_link, headers=headers, params=params)
+    if res.ok:
+        soup = bs(res.text, 'lxml')
+        pages = page_count(soup)
+    print(f'\nПекарь: pages - {pages}')
 
-    res = page_count(main_link, headers, params1)
-    print(f'\nТокарь: pages - {res}')
+    res = requests.get(main_link, headers=headers, params=params1)
+    if res.ok:
+        soup = bs(res.text, 'lxml')
+        pages = page_count(soup)
+    print(f'\nТокарь: pages - {pages}')
 
-    res = page_count(main_link, headers, params2)
-    print(f'\nPython: pages - {res}')
+    res = requests.get(main_link, headers=headers, params=params2)
+    if res.ok:
+        soup = bs(res.text, 'lxml')
+        pages = page_count(soup)
+    print(f'\nPython: pages - {pages}')
