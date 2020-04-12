@@ -20,6 +20,7 @@
 # ************************************************
 
 import requests
+import bs4
 from bs4 import BeautifulSoup as bs
 from pprint import pprint
 import json
@@ -42,6 +43,27 @@ def page_count(soup: bs) -> int:
     else:
         return int(pages_group.find_all('span', {'class': 'pager-item-not-in-short-range'})[-1].\
                    find_all('a', {'class': 'bloko-button HH-Pager-Control'})[0].getText())
+
+def vacansies(vacans: bs4.element.Tag, vac_b: [])->[]:
+    for vacancy in vacans.find_all('div', {'data-qa': 'vacancy-serp__vacancy'}):
+        vac = {}
+        vac['vacancy_name'] = vacancy.find_all('a', {'class': 'bloko-link'})[0].getText()
+        vac['vacancy_company'] = vacancy.find_all('div', {'class': 'vacancy-serp-item__meta-info'})[0].find_all('a', {'class': 'bloko-link'})[0].getText()
+        vac['vacancy_address'] = vacancy.find_all('span', {'data-qa': 'vacancy-serp__vacancy-address'})[0].getText()
+        vacancy_describe = vacancy.find_all('div', {'class': 'g-user-content'})[0].find_all('div')
+        vacancy_describe_text = ''
+        for s in vacancy_describe:
+            vacancy_describe_text = vacancy_describe_text + s.getText()
+        vac['vacancy_describe_text'] = vacancy_describe_text
+
+        vacancy_money = vacancy.find('span', {'data-qa': 'vacancy-serp__vacancy-compensation'})
+
+        if vacancy_money != None:
+            vacancy_money = vacancy_money.getText()
+        vac['vacancy_money'] = vacancy_money
+
+        vac_b.append(vac)
+    return vac_b
 
 
 if __name__ == '__main__':
@@ -77,20 +99,29 @@ if __name__ == '__main__':
                'page': '0'
                }
 
-    res = requests.get(main_link, headers=headers, params=params)
-    if res.ok:
-        soup = bs(res.text, 'lxml')
-        pages = page_count(soup)
-    print(f'\nПекарь: pages - {pages}')
+    vac_base = []
+    par = params1
 
-    res = requests.get(main_link, headers=headers, params=params1)
+    res = requests.get(main_link, headers=headers, params=par)
+    print(f'Current page: {par["page"]}')
     if res.ok:
         soup = bs(res.text, 'lxml')
         pages = page_count(soup)
-    print(f'\nТокарь: pages - {pages}')
+        vac_base.append(vacansies(soup.find_all('div', {'class': 'vacancy-serp'})[0], vac_base))
+        del vac_base[-1]
 
-    res = requests.get(main_link, headers=headers, params=params2)
-    if res.ok:
-        soup = bs(res.text, 'lxml')
-        pages = page_count(soup)
-    print(f'\nPython: pages - {pages}')
+    for n in range(1, pages):
+        par['page'] = n
+        res = requests.get(main_link, headers=headers, params=par)
+        print(f'Current page: {par["page"]}')
+        if res.ok:
+            soup = bs(res.text, 'lxml')
+            pages = page_count(soup)
+            vac_base.append(vacansies(soup.find_all('div', {'class': 'vacancy-serp'})[0], vac_base))
+            del vac_base[-1]
+
+    for vac in vac_base:
+        print(vac)
+        print('* '*20)
+
+    print(f'Обработано: {len(vac_base)} вакансий')
