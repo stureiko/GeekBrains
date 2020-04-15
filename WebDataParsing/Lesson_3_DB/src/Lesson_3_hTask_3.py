@@ -26,7 +26,7 @@ def decoder(mon)->[]:
     res = [None, None, None]
     if mon is not None:
         pos = re.findall(r'^\w+', mon)
-        cur = re.findall(r'\b\S+[.]$', mon)
+        cur = re.findall(r'\b\S+$', mon)
         if len(cur) > 0:
             res[2] = cur[0]
         strings = re.findall(r'\d+\s\d+', mon)
