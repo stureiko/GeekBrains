@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from pprint import pprint
 
 
 if __name__ == '__main__':
@@ -40,11 +41,11 @@ if __name__ == '__main__':
     # for men in coll.find():
     #     print(men)
 
-    print(type(coll))
-
-    print(db.list_collection_names())
-
+    # print(type(coll))
+    #
+    # print(db.list_collection_names())
+    #
     for col in db.list_collection_names():
         print(f'\n{col}')
-        for item in db[col].find():
+        for item in db[col].find({}, {'_id': 0}):
             print(item)
