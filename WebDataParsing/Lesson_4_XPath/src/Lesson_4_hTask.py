@@ -19,6 +19,8 @@ import requests
 from lxml import html
 from pprint import pprint
 import json
+import pymongo
+from pymongo import MongoClient
 
 
 def get_yandex_news()->[]:
@@ -100,15 +102,21 @@ def get_mail_news()->[]:
 
     return result
 
-
-
-
-#TODO: получить новости с mail.ru
 #TODO: получить новости с lenta.ru
-#TODO: сложить все в единой струтктуре в MongoDB
 
 if __name__ == '__main__':
     news = get_yandex_news() + get_mail_news()
-    with open('news.json', 'w') as f:
-        json.dump(news, f)
-    # pprint(get_mail_news())
+
+    client = MongoClient('localhost', 27017)
+    db = client['news']
+    # выбор коллекции документов
+    coll = db['news']
+
+    print(coll.estimated_document_count())
+
+    # coll.drop()
+    for n in news:
+        coll.update_one({'link': n['link']}, {'$set': n}, upsert=True)
+
+    print(coll.estimated_document_count())
+
