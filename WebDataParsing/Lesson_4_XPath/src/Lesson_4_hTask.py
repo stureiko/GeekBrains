@@ -18,6 +18,7 @@
 import requests
 from lxml import html
 from pprint import pprint
+import json
 
 
 def get_yandex_news()->[]:
@@ -30,7 +31,7 @@ def get_yandex_news()->[]:
     source_string = main_link
 
     response = requests.get(source_string, headers=headers)
-    print(response)
+    print("Yandex news: " + str(response))
 
     root = html.fromstring(response.text)
     items = root.xpath("//td[@class='stories-set__item']")
@@ -50,6 +51,64 @@ def get_yandex_news()->[]:
 
     return result
 
+def get_mail_news()->[]:
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko)' \
+                      'Chrome/80.0.3987.163 Safari/537.36'}
+
+    main_link = 'https://news.mail.ru'
+
+    source_string = main_link
+
+    response = requests.get(source_string, headers=headers)
+    print("Mail.ru news: " + str(response))
+    result = []
+
+    root = html.fromstring(response.text)
+    # блок главные новости
+    items = root.xpath("//div[@class='js-module'][@data-module='TrackBlocks']")
+    item = items[0]
+    news = item.xpath("./ul/li/a")
+    for news_item in news:
+        dict = {}
+        dict['title'] = news_item.xpath("./text()")[0]
+        dict['link'] = main_link + news_item.xpath("./@href")[0]
+        result.append(dict)
+    # конец блока главные новости
+
+    # блок новости региона
+    items = root.xpath("//div[contains(@class, 'block block_bg_primary block_separated_top link-hdr')]/div/div/div[@class='cols__wrapper']")
+    item = items[0]
+    news = item.xpath("./div/div/ul/li/span")
+    for news_item in news:
+        dict = {}
+        dict['title'] = news_item.xpath("./a/span/text()")[0]
+        dict['link'] = main_link + news_item.xpath("./a/@href")[0]
+        result.append(dict)
+    # конец блока новости региона
+
+    # Осоновной новостной блок
+    items = root.xpath("//div[@class = 'block block_separated_top rb_nat']")
+    item = items[0]
+    news = item.xpath("./div/div/div/div/div/ul/li/span")
+    for news_item in news:
+        dict = {}
+        dict['title'] = news_item.xpath("./a/span/text()")[0]
+        dict['link'] = main_link + news_item.xpath("./a/@href")[0]
+        result.append(dict)
+    # Конец основного новостного блока
+
+    return result
+
+
+
+
+#TODO: получить новости с mail.ru
+#TODO: получить новости с lenta.ru
+#TODO: сложить все в единой струтктуре в MongoDB
 
 if __name__ == '__main__':
-    pprint(get_yandex_news())
+    news = get_yandex_news() + get_mail_news()
+    with open('news.json', 'w') as f:
+        json.dump(news, f)
+    # pprint(get_mail_news())
