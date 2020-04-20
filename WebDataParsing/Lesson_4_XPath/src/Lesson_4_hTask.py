@@ -110,10 +110,13 @@ if __name__ == '__main__':
     # выбор коллекции документов
     coll = db['news']
 
-    print(coll.estimated_document_count())
+    # Сколько документов сейчас в базе
+    old = coll.estimated_document_count()
 
+    # пройдем по ссылкам новостей и обновим то что можно
     for n in news:
         coll.update_one({'link': n['link']}, {'$set': n}, upsert=True)
 
-    print(coll.estimated_document_count())
+    # сколько документов добавлено в базу
+    print(f'В БД добавлено: {coll.estimated_document_count() - old} документов')
 
