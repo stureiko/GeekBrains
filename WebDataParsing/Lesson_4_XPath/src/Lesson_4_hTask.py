@@ -17,9 +17,6 @@
 
 import requests
 from lxml import html
-from pprint import pprint
-import json
-import pymongo
 from pymongo import MongoClient
 
 
@@ -46,7 +43,6 @@ def get_yandex_news()->[]:
 
         news_date = line[-5:]
         news_source = line[:-5]
-        # dict['date'] = item.xpath("./div/div[@class='story__info']/div[@class='story__date']/text()")[0]
         dict['date'] = news_date
         dict['source'] = news_source
         result.append(dict)
@@ -103,6 +99,8 @@ def get_mail_news()->[]:
     return result
 
 #TODO: получить новости с lenta.ru
+#TODO: проверить разбор даты
+
 
 if __name__ == '__main__':
     news = get_yandex_news() + get_mail_news()
@@ -114,7 +112,6 @@ if __name__ == '__main__':
 
     print(coll.estimated_document_count())
 
-    # coll.drop()
     for n in news:
         coll.update_one({'link': n['link']}, {'$set': n}, upsert=True)
 
