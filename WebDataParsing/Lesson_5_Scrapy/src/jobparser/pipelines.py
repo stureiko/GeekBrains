@@ -88,22 +88,27 @@ class JobparserPipeline(object):
 
         return a
 
-    def process_item(self, item, spider):
-        doc = {}
+    @staticmethod
+    def get_id(line: str) -> str:
+        return line.split('?')[0].split('/')[-1]
 
-        doc['_id'] = self.decoder(item['link'])
-        doc['name'] = self.get_name(item)
-        doc['link'] = item['link']
-        doc['salary_str'] = item['salary']
-        doc['salary'] = self.get_salary(item)
-        doc['describe'] = item['describe']
-        doc['company'] = self.get_company(item)
-        doc['location'] = self.get_location(item)
+    def process_item(self, item, spider):
+        if spider.name == 'hh_ru':
+            doc = {}
+            doc['_id'] = self.get_id(item['link'])
+            doc['name'] = self.get_name(item)
+            doc['link'] = item['link']
+            doc['salary_str'] = item['salary']
+            doc['salary'] = self.get_salary(item)
+            doc['company'] = self.get_company(item)
+            doc['location'] = self.get_location(item)
+
+        if spider.name == 'sj_ru':
+            doc['link'] = item['link']
 
         coll = self.db[spider.name]
         coll.update_one({'_id': doc['_id']}, {'$set': doc}, upsert=True)
         return item
 
-    def decoder(self, line: str)->str:
-        return line.split('?')[0].split('/')[-1]
+
 

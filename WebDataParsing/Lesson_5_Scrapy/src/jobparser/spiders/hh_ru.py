@@ -24,7 +24,6 @@ class HhRuSpider(scrapy.Spider):
         name = response.css("div.vacancy-title h1::text").extract()
         salary = response.xpath("//span[@class='bloko-header-2 bloko-header-2_lite']/text()").extract()
         link = response.url
-        describe = response.xpath("//div[@class='vacancy-description']").extract()
         company = response.xpath("//span[@class='bloko-section-header-2 bloko-section-header-2_lite']/text()").extract()
         location = response.xpath("//p[@data-qa='vacancy-view-location']").extract()
-        yield JobparserItem(name=name, salary=salary, link=link, describe=describe, company=company, location=location)
+        yield JobparserItem(name=name, salary=salary, link=link, company=company, location=location)
