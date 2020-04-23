@@ -9,7 +9,7 @@ if __name__ == '__main__':
     crawler_settings = Settings()
     crawler_settings.setmodule(settings)
     process = CrawlerProcess(settings=crawler_settings)
-    # process.crawl(HhRuSpider, text='java')
+    process.crawl(HhRuSpider, text='java')
     process.crawl(SjruSpider, name='java')
     process.start()
 
