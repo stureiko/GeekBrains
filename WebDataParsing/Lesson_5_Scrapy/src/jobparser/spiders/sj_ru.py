@@ -21,9 +21,9 @@ class SjruSpider(scrapy.Spider):
             yield response.follow(link, callback=self.vacancy_parse)
 
     def vacancy_parse(self, response: HtmlResponse):
-        name = ''
-        salary = ''
+        name = response.xpath("//h1[@class='_3mfro rFbjy s1nFK _2JVkc']/text()").extract()[0]
+        salary = response.xpath("//span[@class='_3mfro _2Wp8I ZON4b PlM3e _2JVkc']/text()").extract()
         link = response.url
-        company = ''
-        location = ''
+        company = response.xpath("//h2[@class='_3mfro PlM3e _2JVkc _2VHxz _3LJqf _15msI']/text()").extract_first()
+        location = response.xpath("//span[@class='_6-z9f']").extract()
         yield JobparserItem(name=name, salary=salary, link=link, company=company, location=location)

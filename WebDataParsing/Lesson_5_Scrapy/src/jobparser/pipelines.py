@@ -96,6 +96,25 @@ class JobparserPipeline(object):
     def get_sj_id(s: str) -> str:
         return s.split('.')[-2].split('-')[-1]
 
+    @staticmethod
+    def get_sj_name(item: [])->str:
+        return item['name']
+
+    @staticmethod
+    def get_sj_location(item: [])->str:
+        r = ''
+        a = ''
+
+        for i in item['location']:
+            r += i
+        root = html.fromstring(r)
+        adrr_l = root.xpath("//span/text()")
+
+        for s in adrr_l:
+            a += s
+
+        return a
+
     def process_item(self, item, spider):
         doc = {}
         if spider.name == 'hh_ru':
@@ -110,6 +129,11 @@ class JobparserPipeline(object):
         if spider.name == 'sj_ru':
             doc['_id'] = self.get_sj_id(item['link'])
             doc['link'] = item['link']
+            doc['name'] = self.get_sj_name(item)
+            doc['salary_str'] = item['salary']
+            doc['company'] = item['company']
+            doc['location'] = self.get_sj_location(item)
+            doc['salary'] = self.get_hh_salary(item)
 
         coll = self.db[spider.name]
         coll.update_one({'_id': doc['_id']}, {'$set': doc}, upsert=True)
