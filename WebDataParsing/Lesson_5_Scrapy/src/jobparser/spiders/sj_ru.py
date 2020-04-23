@@ -10,7 +10,7 @@ class SjruSpider(scrapy.Spider):
     allowed_domains = ['russia.superjob.ru']
 
     def __init__(self, name):
-        start_urls = [f'https://russia.superjob.ru/vacancy/search/?keywords={name}']
+        self.start_urls = [f'https://russia.superjob.ru/vacancy/search/?keywords={name}']
 
     def parse(self, response: HtmlResponse):
         next_page = response.xpath("//a[@class='icMQ_ _1_Cht _3ze9n f-test-button-dalshe f-test-link-Dalshe']/@href").extract_first()

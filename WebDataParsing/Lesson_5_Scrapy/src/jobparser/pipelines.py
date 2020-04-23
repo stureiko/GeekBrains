@@ -18,7 +18,7 @@ class JobparserPipeline(object):
         # выбор коллекции документов
 
     @staticmethod
-    def get_salary(item: []) -> []:
+    def get_hh_salary(item: []) -> []:
         s = item['salary']
         if len(s) > 1:
             r = ''
@@ -55,21 +55,21 @@ class JobparserPipeline(object):
         return sal
 
     @staticmethod
-    def get_company(item: []) -> str:
+    def get_hh_company(item: []) -> str:
         r = ''
         for i in item['company']:
             r += i
         return r
 
     @staticmethod
-    def get_name(item: []) -> str:
+    def get_hh_name(item: []) -> str:
         r = ''
         for i in item['name']:
             r += i
         return r
 
     @staticmethod
-    def get_location(item: []) -> str:
+    def get_hh_location(item: []) -> str:
         r = ''
         a = ''
 
@@ -89,21 +89,26 @@ class JobparserPipeline(object):
         return a
 
     @staticmethod
-    def get_id(line: str) -> str:
+    def get_hh_id(line: str) -> str:
         return line.split('?')[0].split('/')[-1]
 
+    @staticmethod
+    def get_sj_id(s: str) -> str:
+        return s.split('.')[-2].split('-')[-1]
+
     def process_item(self, item, spider):
+        doc = {}
         if spider.name == 'hh_ru':
-            doc = {}
-            doc['_id'] = self.get_id(item['link'])
-            doc['name'] = self.get_name(item)
+            doc['_id'] = self.get_hh_id(item['link'])
+            doc['name'] = self.get_hh_name(item)
             doc['link'] = item['link']
             doc['salary_str'] = item['salary']
-            doc['salary'] = self.get_salary(item)
-            doc['company'] = self.get_company(item)
-            doc['location'] = self.get_location(item)
+            doc['salary'] = self.get_hh_salary(item)
+            doc['company'] = self.get_hh_company(item)
+            doc['location'] = self.get_hh_location(item)
 
         if spider.name == 'sj_ru':
+            doc['_id'] = self.get_sj_id(item['link'])
             doc['link'] = item['link']
 
         coll = self.db[spider.name]
