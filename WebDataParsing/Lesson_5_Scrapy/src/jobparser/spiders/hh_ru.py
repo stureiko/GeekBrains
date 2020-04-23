@@ -14,13 +14,13 @@ class HhRuSpider(scrapy.Spider):
 
     def parse(self, response: HtmlResponse):
         next_page = response.css("a.HH-Pager-Controls-Next::attr(href)").extract_first()
-        yield response.follow(next_page, callback=self.parse)
-
         vacancy_links = response.xpath("//a[@class='bloko-link HH-LinkModifier']/@href").extract()
         for link in vacancy_links:
             yield response.follow(link, callback=self.vacancy_parse)
+        yield response.follow(next_page, callback=self.parse)
 
-    def vacancy_parse(self, response: HtmlResponse):
+    @staticmethod
+    def vacancy_parse(response: HtmlResponse):
         name = response.css("div.vacancy-title h1::text").extract()
         salary = response.xpath("//span[@class='bloko-header-2 bloko-header-2_lite']/text()").extract()
         link = response.url

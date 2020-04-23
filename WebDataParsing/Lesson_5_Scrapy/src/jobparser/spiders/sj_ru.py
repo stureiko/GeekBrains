@@ -14,13 +14,14 @@ class SjruSpider(scrapy.Spider):
 
     def parse(self, response: HtmlResponse):
         next_page = response.xpath("//a[@class='icMQ_ _1_Cht _3ze9n f-test-button-dalshe f-test-link-Dalshe']/@href").extract_first()
-        yield response.follow(next_page, callback=self.parse)
-
         vacancy_links = response.xpath("//div[@class='_3mfro CuJz5 PlM3e _2JVkc _3LJqf']/a/@href").extract()
         for link in vacancy_links:
             yield response.follow(link, callback=self.vacancy_parse)
 
-    def vacancy_parse(self, response: HtmlResponse):
+        yield response.follow(next_page, callback=self.parse)
+
+    @staticmethod
+    def vacancy_parse(response: HtmlResponse):
         name = response.xpath("//h1[@class='_3mfro rFbjy s1nFK _2JVkc']/text()").extract()[0]
         salary = response.xpath("//span[@class='_3mfro _2Wp8I ZON4b PlM3e _2JVkc']/text()").extract()
         link = response.url
