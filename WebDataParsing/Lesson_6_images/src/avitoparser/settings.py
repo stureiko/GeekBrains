@@ -71,7 +71,8 @@ DOWNLOAD_DELAY = 2
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'Lesson_6_images.src.avitoparser.pipelines.AvitoparserPipeline': 300,
+    'Lesson_6_images.src.avitoparser.pipelines.AvitoparserPipeline': 300,
+    'Lesson_6_images.src.avitoparser.pipelines.AvitoPhotosPipline': 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
