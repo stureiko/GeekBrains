@@ -27,9 +27,13 @@ class AvitoPhotosPipline(ImagesPipeline):
         if item['photos']:
             for img in item['photos']:
                 try:
-                    yield scrapy.Request(f'http:{img}')
+                    yield scrapy.Request(img)
                 except Exception as e:
                     print(e)
+
+    def file_path(self, request, response=None, info=None):
+        #TODO: Сделать обработку - чтобы фотографии от разных объяевлений складывались в соотвествующие папки
+        pass
 
     def item_completed(self, results, item, info):
         if results[0]:
