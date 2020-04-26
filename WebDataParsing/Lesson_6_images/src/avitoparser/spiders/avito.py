@@ -21,7 +21,3 @@ class AvitoSpider(scrapy.Spider):
         loader.add_xpath('name', "//h1/span/text()")
         loader.add_xpath('photos', "//div[contains(@class, 'gallery-img-frame')]/@data-url")
         yield loader.load_item()
-
-        # name = response.xpath("//h1/span/text()").extract_first()
-        # photos = response.xpath("//div[contains(@class, 'gallery-img-frame')]/@data-url").extract()
-        # yield AvitoparserItem(name=name, photos=photos)

@@ -7,6 +7,8 @@
 import scrapy
 from scrapy.pipelines.images import ImagesPipeline
 from pymongo import MongoClient
+import os
+from urllib.parse import urlparse
 
 
 class AvitoparserPipeline:
@@ -24,6 +26,7 @@ class AvitoparserPipeline:
 
 class AvitoPhotosPipline(ImagesPipeline):
     def get_media_requests(self, item, info):
+        self.name = item['name']
         if item['photos']:
             for img in item['photos']:
                 try:
@@ -32,8 +35,11 @@ class AvitoPhotosPipline(ImagesPipeline):
                     print(e)
 
     def file_path(self, request, response=None, info=None):
-        #TODO: Сделать обработку - чтобы фотографии от разных объяевлений складывались в соотвествующие папки
-        pass
+        directory_name = self.name
+        image_name = str(request.url).split('/')[-1]
+        image_name = image_name[:image_name.find('.')]
+        file_name = f'{directory_name}/{image_name}.jpg'
+        return file_name
 
     def item_completed(self, results, item, info):
         if results[0]:
