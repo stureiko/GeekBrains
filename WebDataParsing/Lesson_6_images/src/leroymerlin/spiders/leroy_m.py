@@ -19,13 +19,12 @@ class LeroyMSpider(scrapy.Spider):
             yield response.follow(link, callback=self.good_parse)
         yield response.follow(next_page, callback=self.parse)
 
-    @staticmethod
-    def good_parse(response: HtmlResponse):
-        loader = ItemLoader(LeroymerlinItem, response=response)
+    def good_parse(self, response: HtmlResponse):
+        loader = ItemLoader(item=LeroymerlinItem(), response=response)
         loader.add_xpath('name', "//h1[@slot='title']/text()")
         loader.add_xpath('photos', "//img/@data-origin")
         loader.add_xpath('price', "//span[@slot='price']/text()")
-        loader.add_xpath('param_keys', "//dt[@class='def-list__term']/text()")
-        loader.add_xpath('param_values', "//dd[@class='def-list__definition']/text()")
+        # loader.add_xpath('param_keys', "//dt[@class='def-list__term']/text()")
+        # loader.add_xpath('param_values', "//dd[@class='def-list__definition']/text()")
         yield loader.load_item()
 
