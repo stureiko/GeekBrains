@@ -60,7 +60,6 @@ if __name__ == '__main__':
     options.add_argument("–enable-automation")
     options.add_argument("–start-maximized")
     options.add_argument("--headless")
-    # options.add_argument(​"--headless"​)
     driver = webdriver.Chrome(
         '/Users/igor/Documents/Programming/Geekbrains/WebDataParsing/Lesson_7_Selenium/src/chromedriver',
         options=options)
