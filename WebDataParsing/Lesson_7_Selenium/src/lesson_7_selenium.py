@@ -55,15 +55,17 @@ if __name__ == '__main__':
     driver.get(edit_profile.get_attribute('href'))  # извлекаем из нее ссылку и переходим по ней
 
     # Множественный выбор
-    # gender = driver.find_element_by_name('user[gender]')  # переходим к полю
+    gender = driver.find_element_by_name('user[gender]')  # переходим к полю
     # g_options = gender.find_elements_by_tag_name('option')  # получаем все значения
     # for g_option in g_options:  # проходим по всем значениям
     #     if g_option.text == 'Мужской':  # находим нужный
     #         g_option.click()  # кликаем по нему
 
     # Альтернативный способ через подключение библиотеки Select
-    # g_select = Select(driver.find_element_by_name('user[gender]'))
+    g_select = Select(gender)  # получаем список значений
+    g_select.select_by_value('0')  # выбираем значение
 
+    gender.submit()  # сохраняем изменения на странице
 
     # driver.close()  # Закроет только текущее окно
     # driver.quit()  # полностью закроет все окна, браузер и освободит ресурсы
