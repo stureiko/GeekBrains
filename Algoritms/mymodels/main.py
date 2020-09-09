@@ -1,10 +1,12 @@
 from sklearn import datasets
 from sklearn import model_selection
+import numpy as np
 
 from DesisionTree import DesisionTree, accuracy_metric
 from RandomForestDesign import RandomForestDesign
 from RegressionTree import RegressionTree, R2
 from RandomForestRegression import RandomForestRegression
+from LogRegression import LogRegression, f1_score
 
 
 def class_tree():
@@ -97,10 +99,27 @@ def reg_forest():
     print(f' R2 train: {r2_train:.4f}')
     print(f' R2 test: {r2_test:.4f}')
 
+def log_los_regression():
+    loglos = LogRegression(iterations=1000, alpha=1e-4, tol=1e-5, bound=1e-5)
+
+    # подготовка данных
+    X = np.array([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                  [1, 1, 2, 1, 3, 0, 5, 10, 1, 2],
+                  [500, 700, 750, 600, 1450,
+                   800, 1500, 2000, 450, 1000],
+                  [1, 1, 2, 1, 2,
+                   1, 3, 3, 1, 2]], dtype=np.float64)
+
+    y = np.array([0, 0, 1, 0, 1, 0, 1, 0, 1, 1], dtype=np.float64)
+
+    loglos.fit(X, y)
+    y_pred = loglos.predict_proba(X)
+    print(f'f1 score: {f1_score(y_true=y, y_pred=y_pred)}')
 
 
 if __name__ == '__main__':
     # class_tree()
     # reg_tree()
     # rand_forest()
-    reg_forest()
+    # reg_forest()
+    log_los_regression()
