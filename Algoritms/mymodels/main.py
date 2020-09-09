@@ -87,7 +87,7 @@ def reg_forest():
     my_reg_forest.fit(X_train, y_train)
 
     y_pred_train = my_reg_forest.tree_vote(X_train)
-    y_pred_test = my_reg_forest.tree_vote(y_test)
+    y_pred_test = my_reg_forest.tree_vote(X_test)
 
     # R2 на обучающей выборке
     r2_train = R2(y_train, y_pred_train)
@@ -102,5 +102,5 @@ def reg_forest():
 if __name__ == '__main__':
     # class_tree()
     # reg_tree()
-    rand_forest()
-    # reg_forest()
+    # rand_forest()
+    reg_forest()
