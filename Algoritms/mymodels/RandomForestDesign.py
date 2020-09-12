@@ -7,9 +7,8 @@ from DesisionTree import Node, Leaf
 
 
 class DesignForestTree:
-    def __init__(self, criteria='gini', max_leaf=100):
+    def __init__(self, criteria='gini'):
         self.criteria = criteria
-        self.max_leaf = max_leaf
         self.Node = None
 
     @staticmethod
@@ -86,7 +85,7 @@ class DesignForestTree:
     def find_best_split(self, data, labels):
 
         #  обозначим минимальное количество объектов в узле
-        min_leaf = 5
+        min_leaf = 1
 
         if self.criteria == 'entropia':
             current_informations = self.entropia(labels)
@@ -126,10 +125,6 @@ class DesignForestTree:
 
         #  Базовый случай - прекращаем рекурсию, когда нет прироста в качества
         if quality == 0:
-            return Leaf(data, labels)
-
-        # Если достигли ограничения по количеству листьев - прекращаем рекурсию
-        if Leaf.INSTANCE >= self.max_leaf:
             return Leaf(data, labels)
 
         true_data, false_data, true_labels, false_labels = self.split(data, labels, index, t)

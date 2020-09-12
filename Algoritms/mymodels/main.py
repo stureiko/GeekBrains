@@ -51,14 +51,14 @@ def reg_tree():
 
 
 def rand_forest():
-    classification_data, classification_labels = datasets.make_classification(n_samples=500,
-                                                                              n_features=5, n_informative=5,
+    classification_data, classification_labels = datasets.make_classification(n_samples=1000,
+                                                                              n_features=2, n_informative=2,
                                                                               n_classes=2, n_redundant=0,
                                                                               n_clusters_per_class=1, random_state=23)
     train_data, test_data, train_labels, test_labels = model_selection.train_test_split(classification_data,
                                                                                         classification_labels,
                                                                                         test_size=0.3,
-                                                                                    random_state=1)
+                                                                                        random_state=1)
 
     n_trees = 10
 
@@ -120,6 +120,6 @@ def log_los_regression():
 if __name__ == '__main__':
     # class_tree()
     # reg_tree()
-    # rand_forest()
+    rand_forest()
     # reg_forest()
-    log_los_regression()
+    # log_los_regression()
