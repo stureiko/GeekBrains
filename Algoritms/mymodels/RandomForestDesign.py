@@ -7,8 +7,16 @@ from DesisionTree import Node, Leaf
 
 
 class DesignForestTree:
-    def __init__(self, criteria='gini'):
+    def __init__(self, max_depth: int = 6,
+                 num_leaves: int = 64,
+                 min_samples_leaf: int = 5,
+                 criteria='gini'):
         self.criteria = criteria
+        self.max_depth = max_depth
+        self.num_leaves = num_leaves
+        self.min_samples_leaf = min_samples_leaf
+        self.current_leaves = 0
+        self.current_depth = 0
         self.Node = None
 
     @staticmethod
@@ -85,7 +93,7 @@ class DesignForestTree:
     def find_best_split(self, data, labels):
 
         #  обозначим минимальное количество объектов в узле
-        min_leaf = 1
+        # min_leaf = 1
 
         if self.criteria == 'entropia':
             current_informations = self.entropia(labels)
@@ -108,7 +116,7 @@ class DesignForestTree:
             for t in t_values:
                 true_data, false_data, true_labels, false_labels = self.split(data, labels, index, t)
                 #  пропускаем разбиения, в которых в узле остается менее 5 объектов
-                if len(true_data) < min_leaf or len(false_data) < min_leaf:
+                if len(true_data) < self.min_samples_leaf or len(false_data) < self.min_samples_leaf:
                     continue
 
                 current_quality = self.quality(true_labels, false_labels, current_informations)
@@ -123,7 +131,15 @@ class DesignForestTree:
 
         quality, t, index = self.find_best_split(data, labels)
 
-        #  Базовый случай - прекращаем рекурсию, когда нет прироста в качества
+        #  Базовый случай - прекращаем рекурсию, когда достигнут предел по кол-ву листьев
+        if self.current_leaves <= self.num_leaves:
+            return Leaf(data, labels)
+
+        # Случай 2 - прекращаем рекурсию, когда достигнут предел по глубине дерева
+        if self.current_depth <= self.max_depth:
+            return Leaf(data, labels)
+
+        # Случай 3 - прекращаем рекурсию, когда нет прироста в качества
         if quality == 0:
             return Leaf(data, labels)
 
@@ -163,8 +179,17 @@ class DesignForestTree:
 
 
 class RandomForestDesign:
-    def __init__(self, n_trees):
+    def __init__(self,
+                 n_trees,
+                 max_depth: int = 6,
+                 num_leaves: int = 64,
+                 min_samples_leaf: int = 5,
+                 criteria='gini'):
         self.n_trees = n_trees
+        self.max_depth = max_depth
+        self.num_leaves = num_leaves
+        self.min_samples_leaf = min_samples_leaf
+        self.criteria = criteria
         self.forest = None
 
     def fit(self, data, labels):
@@ -172,7 +197,7 @@ class RandomForestDesign:
         bootstrap = get_bootstrap(data, labels, self.n_trees)
 
         for b_data, b_labels in bootstrap:
-            tree = DesignForestTree(criteria='gini')
+            tree = DesignForestTree(min_samples_leaf=5, max_depth=6, num_leaves=64, criteria='gini')
             tree.fit(b_data, b_labels)
             self.forest.append(tree)
 
