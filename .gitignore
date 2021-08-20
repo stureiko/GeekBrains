@@ -122,3 +122,6 @@ venv.bak/
 *.png
 *.key
 *.jpg
+
+# saved comlete model
+*.dill
