@@ -108,7 +108,7 @@ venv.bak/
 .DS_Store
 
 # Templates
-/src/.*
+src/.*
 
 # .gitignore
 .gitignore
@@ -117,11 +117,14 @@ venv.bak/
 *.csv
 
 # data and webinar materials
-/data/*
-/Webinar/*
+data/
+Data/
+HW_data/
+Webinar/
 *.png
 *.key
 *.jpg
 
 # saved comlete model
 *.dill
+*.pkl
