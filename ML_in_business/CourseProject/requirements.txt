@@ -4,4 +4,6 @@ matplotlib
 seaborn
 wordcloud
 sklearn
-pickle
+pickleshare==0.7.5
+flask
+dill

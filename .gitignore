@@ -115,6 +115,7 @@ src/.*
 
 # data .csv
 *.csv
+*.json
 
 # data and webinar materials
 data/
