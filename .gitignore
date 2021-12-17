@@ -133,3 +133,6 @@ Webinar/
 # Archives
 *.zip
 *.rar
+
+# compile model with weights
+*.h5
