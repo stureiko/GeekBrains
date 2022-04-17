@@ -127,6 +127,7 @@ Webinar/
 *.jpg
 *.gif
 *.mp4
+*.svg
 
 # saved comlete model
 *.dill
