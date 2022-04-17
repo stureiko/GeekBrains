@@ -1,0 +1,2 @@
+Соревнование - наш курсовой проект в данном курсе
+https://www.kaggle.com/c/geekbrains-competitive-data-analysis/overview
